@@ -36,8 +36,8 @@ openio_zookeeper_autopurge_purgeInterval: 1
 openio_zookeeper_log_properties: "INFO,ROLLINGFILE"
 openio_zookeeper_rolling_log_file_max_size: "10MB"
 
-openio_zookeeper_servers: 
-  - ip: "{{ openio_zookeeper_bind_address }}" 
+openio_zookeeper_servers:
+  - ip: "{{ openio_zookeeper_bind_address }}"
     id: 1
 #openio_zookeeper_hostname: "{{ ansible_hostname }}"
 openio_zookeeper_gridinit_dir: "/etc/gridinit.d/{{ openio_zookeeper_namespace }}"
