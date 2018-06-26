@@ -1,0 +1,47 @@
+# Test playbook
+---
+- name: generate docker ZK group
+  hosts: all
+  gather_facts: false
+  tasks:
+    - add_host:
+        name: "{{ item.name }}"
+        ansible_host: "{{ item.ip }}"
+        ansible_eth0:
+          ipv4:
+            address: "{{ item.ip }}"
+        groups: zk
+      with_items:
+        - { name: "node1", ip: "172.17.0.2" }
+        - { name: "node2", ip: "172.17.0.3" }
+        - { name: "node3", ip: "172.17.0.4" }
+      delegate_to: localhost
+      run_once: true
+      changed_when: false
+
+- hosts: localhost
+  become: true
+  vars:
+    NS: TRAVIS
+  roles:
+    - role: repo
+    - role: gridinit
+      openio_gridinit_namespace: "{{ NS }}"
+      openio_gridinit_per_ns: true
+
+    - role: role_under_test
+      openio_zookeeper_namespace: "{{ NS }}"
+      openio_zookeeper_memory: 128M
+      openio_zookeeper_parallel_gc_threads: 1
+      #openio_zookeeper_servers: "{{ groups['zk'] }}"
+      openio_zookeeper_servers:
+        - host: "node1"
+          ip: "172.17.0.2"
+          id: 1
+        - host: "node2"
+          ip: "172.17.0.3"
+          id: 2
+        - host: "node3"
+          ip: "172.17.0.4"
+          id: 3
+...
