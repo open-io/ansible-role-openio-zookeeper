@@ -1,0 +1,9 @@
+---
+openio_zookeeper_sysconfig_dir: "/etc/oio/sds/{{ openio_zookeeper_namespace }}"
+openio_zookeeper_servicename: "zookeeper-{{ openio_zookeeper_serviceid }}"
+openio_zookeeper_log_dir: "/var/log/oio/sds/{{ openio_zookeeper_namespace }}/{{ openio_zookeeper_servicename }}"
+
+openio_zookeeper_definition_file: >
+  "{{ openio_zookeeper_sysconfig_dir }}/
+  {{ openio_zookeeper_servicename }}/{{ openio_zookeeper_servicename }}.conf"
+...

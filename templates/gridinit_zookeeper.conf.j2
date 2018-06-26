@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+[Service.{{ openio_zookeeper_namespace }}-zookeeper-{{ openio_zookeeper_serviceid }}]
+command=java {{ openio_zookeeper_java_args }} -Dzookeeper.log.dir=/var/log/oio/sds/{{ openio_zookeeper_namespace }}/{{ openio_zookeeper_servicename }} -Dzookeeper.root.logger={{ openio_zookeeper_log_properties }} -cp {{ openio_zookeeper_classpath | join(':') }} -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.local.only=false org.apache.zookeeper.server.quorum.QuorumPeerMain {{ openio_zookeeper_sysconfig_dir }}/{{ openio_zookeeper_servicename }}/zoo.cfg
+enabled=true
+start_at_boot=true
+on_die=respawn
+group={{ openio_zookeeper_namespace }},zookeeper,{{ openio_zookeeper_serviceid }}
+uid=openio
+gid=openio
+env.PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin

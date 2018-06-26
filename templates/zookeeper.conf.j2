@@ -1,0 +1,30 @@
+# {{ ansible_managed }}
+# The number of milliseconds of each tick
+tickTime={{ openio_zookeeper_tick_time }}
+# The number of ticks that the initial
+# synchronization phase can take
+initLimit={{ openio_zookeeper_init_limit }}
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
+syncLimit={{ openio_zookeeper_sync_limit }}
+# the directory where the snapshot is stored.
+dataDir={{ openio_zookeeper_volume }}
+# the port at which the clients will connect
+clientPort={{ openio_zookeeper_bind_port }}
+maxClientCnxns={{ openio_zookeeper_max_client_connections }}
+{% if openio_zookeeper_autopurge_purgeInterval > 0 %}
+autopurge.snapRetainCount={{ openio_zookeeper_autopurge_snapRetainCount }}
+autopurge.purgeInterval={{ openio_zookeeper_autopurge_purgeInterval }}
+{% endif %}
+
+{% for server in openio_zookeeper_servers %}
+{% if server.host is defined %}
+{% if server.ip is defined %}
+server.{{ server.id }}={{ server.ip }}:{{ openio_zookeeper_cluster_ports }}
+{% else %}
+server.{{ server.id }}={{ server.host }}:{{ openio_zookeeper_cluster_ports }}
+{% endif %}
+{% else %}
+server.{{ loop.index }}={{ hostvars[server]['ansible_' + openio_zookeeper_bind_interface]['ipv4']['address'] }}:{{ openio_zookeeper_cluster_ports }}
+{% endif %}
+{% endfor %}

@@ -1,0 +1,21 @@
+# roles/zookeeper/vars/Debian.yml
+# Distribution-specific variables for Ubuntu, Debian, ...
+---
+openio_zookeeper_jdk_version: 8
+openio_zookeeper_classpath: 
+  - "{{ openio_zookeeper_sysconfig_dir }}/{{ openio_zookeeper_servicename }}"
+  - /etc/zookeeper/conf
+  - /usr/share/java/jline.jar
+  - /usr/share/java/log4j-1.2.jar
+  - /usr/share/java/xercesImpl.jar
+  - /usr/share/java/xmlParserAPIs.jar
+  - /usr/share/java/netty.jar
+  - /usr/share/java/slf4j-api.jar
+  - /usr/share/java/slf4j-log4j12.jar
+  - /usr/share/java/zookeeper.jar
+
+zookeeper_packages:
+  - "openjdk-{{ openio_zookeeper_jdk_version }}-jre-headless"
+  - zookeeperd
+  - python-zookeeper
+...

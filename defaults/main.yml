@@ -1,0 +1,45 @@
+# roles/zookeeper/defaults/main.yml
+---
+openio_zookeeper_namespace: "OPENIO"
+openio_zookeeper_serviceid: "0"
+
+openio_zookeeper_bind_interface: "{{ ansible_default_ipv4.alias }}"
+openio_zookeeper_bind_address:
+  "{{ hostvars[inventory_hostname]['ansible_' + openio_zookeeper_bind_interface]['ipv4']['address'] }}"
+
+openio_zookeeper_bind_port: 6005
+openio_zookeeper_cluster_ports: "2888:3888"
+
+openio_zookeeper_volume: "/var/lib/oio/sds/{{ openio_zookeeper_namespace }}/zookeeper-{{ openio_zookeeper_serviceid }}"
+openio_zookeeper_memory: >-
+  {% if ansible_memtotal_mb > 4000 -%}
+  {%   if (ansible_memtotal_mb / 2) > 8192 -%}
+  8192M
+  {%   else -%}
+  {{ (ansible_memtotal_mb / 2) | int }}M
+  {%   endif -%}
+  {% else -%}
+  {{ ansible_memtotal_mb | int }}M
+  {% endif -%}
+openio_zookeeper_parallel_gc_threads: "{{ ansible_processor_vcpus if  ansible_processor_vcpus < 20 else '8' }}"
+openio_zookeeper_java_args: "-Xms{{ openio_zookeeper_memory }} -Xmx{{ openio_zookeeper_memory }} \
+  -XX:+UseParallelGC \
+  -XX:ParallelGCThreads={{ openio_zookeeper_parallel_gc_threads }} \
+  -Djute.maxbuffer=8388608"
+
+openio_zookeeper_tick_time: 2000
+openio_zookeeper_init_limit: 10
+openio_zookeeper_sync_limit: 5
+openio_zookeeper_max_client_connections: 200
+openio_zookeeper_autopurge_snapRetainCount: 3
+openio_zookeeper_autopurge_purgeInterval: 1
+openio_zookeeper_log_properties: "INFO,ROLLINGFILE"
+openio_zookeeper_rolling_log_file_max_size: "10MB"
+
+openio_zookeeper_servers: 
+  - ip: "{{ openio_zookeeper_bind_address }}" 
+    id: 1
+#openio_zookeeper_hostname: "{{ ansible_hostname }}"
+openio_zookeeper_gridinit_dir: "/etc/gridinit.d/{{ openio_zookeeper_namespace }}"
+openio_zookeeper_gridinit_file_prefix: ""
+...
