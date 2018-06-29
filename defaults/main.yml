@@ -12,14 +12,18 @@ openio_zookeeper_cluster_ports: "2888:3888"
 
 openio_zookeeper_volume: "/var/lib/oio/sds/{{ openio_zookeeper_namespace }}/zookeeper-{{ openio_zookeeper_serviceid }}"
 openio_zookeeper_memory: >-
-  {% if ansible_memtotal_mb > 4000 -%}
+  {% if ansible_memtotal_mb ©
   {%   if (ansible_memtotal_mb / 2) > 8192 -%}
   8192M
   {%   else -%}
   {{ (ansible_memtotal_mb / 2) | int }}M
   {%   endif -%}
   {% else -%}
-  {{ ansible_memtotal_mb | int }}M
+  {% if ansible_memtotal_mb / 3 < 256 -%}
+  256M
+  {% else -%}
+  {{ (ansible_memtotal_mb / 3) | int }}M
+  {% endif -%}
   {% endif -%}
 openio_zookeeper_parallel_gc_threads: "{{ ansible_processor_vcpus if  ansible_processor_vcpus < 20 else '8' }}"
 openio_zookeeper_java_args: "-Xms{{ openio_zookeeper_memory }} -Xmx{{ openio_zookeeper_memory }} \
