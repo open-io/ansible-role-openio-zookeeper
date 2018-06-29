@@ -12,7 +12,7 @@ openio_zookeeper_cluster_ports: "2888:3888"
 
 openio_zookeeper_volume: "/var/lib/oio/sds/{{ openio_zookeeper_namespace }}/zookeeper-{{ openio_zookeeper_serviceid }}"
 openio_zookeeper_memory: >-
-  {% if ansible_memtotal_mb ©
+  {% if ansible_memtotal_mb -%}
   {%   if (ansible_memtotal_mb / 2) > 8192 -%}
   8192M
   {%   else -%}
