@@ -28,6 +28,10 @@
     - "{{ ansible_os_family }}.yml"
   tags: install
 
+- name: register openio_zookeeper_bind_address
+  set_fact:
+    _zk_addess: "{{ openio_zookeeper_bind_address }}"
+
 - name: Test directories presence
   stat:
     path: "{{ item }}"

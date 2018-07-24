@@ -25,6 +25,6 @@ server.{{ server.id }}={{ server.ip }}:{{ openio_zookeeper_cluster_ports }}
 server.{{ server.id }}={{ server.host }}:{{ openio_zookeeper_cluster_ports }}
 {% endif %}
 {% else %}
-server.{{ loop.index }}={{ hostvars[server]['ansible_' + openio_zookeeper_bind_interface]['ipv4']['address'] }}:{{ openio_zookeeper_cluster_ports }}
+server.{{ loop.index }}={{ hostvars[server]['_zk_addess'] }}:{{ openio_zookeeper_cluster_ports }}
 {% endif %}
 {% endfor %}
