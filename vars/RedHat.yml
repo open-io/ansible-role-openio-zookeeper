@@ -1,14 +1,12 @@
 # roles/zookeeper/vars/RedHat.yml
 # Distribution-specific variables for RHEL, CentOS, ...
 ---
-openio_zookeeper_jdk_version: 1.8.0
-
 openio_zookeeper_classpath:
   - "{{ openio_zookeeper_sysconfig_dir }}/{{ openio_zookeeper_servicename }}"
   - /usr/share/zookeeper/*
 
 zookeeper_packages:
-  - "java-{{ openio_zookeeper_jdk_version }}-openjdk-headless"
+  - java-headless
   - zookeeper
   - python-ZooKeeper
 ...
