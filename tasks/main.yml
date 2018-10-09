@@ -85,6 +85,6 @@
     gridinit_cmd restart  {{openio_zookeeper_namespace}}-zookeeper-{{openio_zookeeper_serviceid}}
   when:
     - _zookeeper_conf.changed
-    - not openio_provision_only
+    - not openio_zookeeper_provision_only
   tags: configure
 ...

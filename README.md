@@ -35,7 +35,7 @@ An Ansible role for PURPOSE. Specifically, the responsibilities of this role are
 | `openio_zookeeper_sync_limit` | `5` | The entry syncLimit limits how far out of date a server can be from a leader |
 | `openio_zookeeper_tick_time` | `2000` | The basic time unit in milliseconds used by ZooKeeper. It is used to do heartbeats and the minimum session timeout will be twice the tickTime |
 | `openio_zookeeper_volume` | `"/var/lib/oio/sds/{{ openio_zookeeper_namespace }}/zookeeper-{{ openio_zookeeper_serviceid }}"` | Path to store data |
-| `openio_provision_only` | `false` | Provision only without restarting services |
+| `openio_zookeeper_provision_only` | `false` | Provision only without restarting services |
 
 
 ## Dependencies
