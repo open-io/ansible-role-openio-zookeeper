@@ -40,7 +40,6 @@
     - "/etc/gridinit.d/{{ openio_zookeeper_namespace }}"
     - "{{ openio_zookeeper_sysconfig_dir }}/zookeeper-{{ openio_zookeeper_serviceid }}"
     - "{{ openio_zookeeper_volume }}"
-    - "{{ openio_zookeeper_log_dir }}"
 
 - name: Ensure directories exists
   file:
@@ -52,6 +51,16 @@
     recurse: true
   with_items: "{{ _dir.results }}"
   when: not item.stat.exists
+  tags: install
+
+- name: Ensure log directory
+  file:
+    path: "{{ openio_zookeeper_log_dir }}"
+    state: directory
+    owner: "{{ syslog_user }}"
+    group: openio
+    mode: 0750
+    recurse: true
   tags: install
 
 - name: Generate configuration files

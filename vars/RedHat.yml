@@ -9,4 +9,6 @@ zookeeper_packages:
   - java-headless
   - zookeeper
   - python-ZooKeeper
+
+syslog_user: openio
 ...
