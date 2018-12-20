@@ -1,9 +1,10 @@
 [![Build Status](https://travis-ci.org/open-io/ansible-role-openio-zookeeper.svg?branch=master)](https://travis-ci.org/open-io/ansible-role-openio-zookeeper)
 # Ansible role `zookeeper`
 
-An Ansible role for PURPOSE. Specifically, the responsibilities of this role are to:
+An Ansible role for manage zookeeper. Specifically, the responsibilities of this role are to:
 
--
+- install ZooKeeper
+- configure ZooKeeper
 
 ## Requirements
 
@@ -49,7 +50,24 @@ No dependencies.
   gather_facts: true
   become: true
   roles:
+    - role: users
+    - role: repo
+    - role: gridinit
+      openio_gridinit_namespace: "{{ NS }}"
     - role: zookeeper
+      openio_zookeeper_namespace: "{{ NS }}"
+      openio_zookeeper_memory: 128M
+      openio_zookeeper_parallel_gc_threads: 1
+      openio_zookeeper_servers:
+        - host: "node1"
+          ip: "172.17.0.2"
+          id: 1
+        - host: "node2"
+          ip: "172.17.0.3"
+          id: 2
+        - host: "node3"
+          ip: "172.17.0.4"
+          id: 3
 ```
 
 
