@@ -7,20 +7,6 @@
     - "{{ ansible_os_family }}.yml"
   tags: install
 
-- name: Create the 'openio' group
-  group:
-    name: openio
-    gid: "{{ openio_group_openio_gid | default('220')}}"
-  tags: install
-
-- name: Create the 'openio' user
-  user:
-    name: openio
-    comment: "openio account"
-    uid: "{{ openio_user_openio_uid | default('120')}}"
-    group: openio
-  tags: install
-
 - name: "Include {{ ansible_distribution }} tasks"
   include_tasks: "{{ item }}"
   with_first_found:
@@ -32,36 +18,22 @@
   set_fact:
     _zk_addess: "{{ openio_zookeeper_bind_address }}"
 
-- name: Test directories presence
-  stat:
-    path: "{{ item }}"
-  register: _dir
-  with_items:
-    - "/etc/gridinit.d/{{ openio_zookeeper_namespace }}"
-    - "{{ openio_zookeeper_sysconfig_dir }}/zookeeper-{{ openio_zookeeper_serviceid }}"
-    - "{{ openio_zookeeper_volume }}"
-
 - name: Ensure directories exists
   file:
-    path: "{{ item.item }}"
+    path: "{{ item.path }}"
     state: directory
-    owner: openio
-    group: openio
-    mode: 0755
-    recurse: true
-  with_items: "{{ _dir.results }}"
-  when: not item.stat.exists
+    owner: "{{ item.owner | default('openio') }}"
+    group: "{{ item.group | default('openio') }}"
+    mode: "{{ item.mode | default(0755) }}"
+  with_items:
+    - path: "/etc/gridinit.d/{{ openio_zookeeper_namespace }}"
+    - path: "{{ openio_zookeeper_sysconfig_dir }}/{{ openio_zookeeper_servicename }}"
+    - path: "{{ openio_zookeeper_volume }}"
+    - path: "{{ openio_zookeeper_log_dir }}"
+      owner: "{{ syslog_user }}"
+      mode: "0750"
   tags: install
 
-- name: Ensure log directory
-  file:
-    path: "{{ openio_zookeeper_log_dir }}"
-    state: directory
-    owner: "{{ syslog_user }}"
-    group: openio
-    mode: 0750
-    recurse: true
-  tags: install
 
 - name: Generate configuration files
   template:
@@ -73,16 +45,16 @@
   with_items:
     - src: "zookeeper.conf.j2"
       dest: "{{ openio_zookeeper_sysconfig_dir }}/\
-        zookeeper-{{ openio_zookeeper_serviceid }}/zoo.cfg"
+        {{ openio_zookeeper_servicename }}/zoo.cfg"
     - src: "log4j.properties.j2"
       dest: "{{ openio_zookeeper_sysconfig_dir }}/\
-        zookeeper-{{ openio_zookeeper_serviceid }}/log4j.properties"
+        {{ openio_zookeeper_servicename }}/log4j.properties"
     - src: "java.env.j2"
       dest: "{{ openio_zookeeper_sysconfig_dir }}/\
-        zookeeper-{{ openio_zookeeper_serviceid }}/java.env"
+        {{ openio_zookeeper_servicename }}/java.env"
     - src: "gridinit_zookeeper.conf.j2"
       dest: "{{ openio_zookeeper_gridinit_dir }}/{{ openio_zookeeper_gridinit_file_prefix }}\
-        zookeeper-{{ openio_zookeeper_serviceid }}.conf"
+        {{ openio_zookeeper_servicename }}.conf"
     - src: "myid.j2"
       dest: "{{ openio_zookeeper_volume }}/myid"
 
@@ -91,7 +63,7 @@
 - name: restart zookeeper
   shell: |
     gridinit_cmd reload
-    gridinit_cmd restart  {{openio_zookeeper_namespace}}-zookeeper-{{openio_zookeeper_serviceid}}
+    gridinit_cmd restart  {{ openio_zookeeper_namespace }}-{{ openio_zookeeper_servicename }}
   when:
     - _zookeeper_conf.changed
     - not openio_zookeeper_provision_only
