@@ -1,7 +1,11 @@
-{% if openio_zookeeper_servers.ip is defined -%}
-{% if openio_zookeeper_servers.ip in ansible_all_ipv4_addresses -%}
-{{ openio_zookeeper_servers.id }}
+{% for server in openio_zookeeper_servers -%}
+{% if server.ip is defined -%}
+{% if server.ip in ansible_all_ipv4_addresses -%}
+{{ server.id }}
 {% endif -%}
 {% else -%}
+{% if loop.first -%}
 {{ openio_zookeeper_servers.index(inventory_hostname) + 1 }}
 {% endif -%}
+{% endif -%}
+{% endfor -%}
