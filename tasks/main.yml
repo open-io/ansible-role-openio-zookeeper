@@ -16,7 +16,7 @@
 
 - name: register openio_zookeeper_bind_address
   set_fact:
-    _zk_addess: "{{ openio_zookeeper_bind_address }}"
+    _zk_address: "{{ openio_zookeeper_bind_address }}"
 
 - name: Ensure directories exists
   file:
