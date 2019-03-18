@@ -17,7 +17,7 @@ An Ansible role for manage zookeeper. Specifically, the responsibilities of this
 | :---       | :---    | :---             |
 | `openio_zookeeper_autopurge_purgeInterval` | `1` | The time interval in hours for which the purge task has to be triggered. Set to a positive integer (1 and above) to enable the auto purging |
 | `openio_zookeeper_autopurge_snapRetainCount` | `3` | When enabled, ZooKeeper auto purge feature retains the autopurge.snapRetainCount most recent snapshots and the corresponding transaction logs in the dataDir and dataLogDir respectively and deletes the rest |
-| `openio_zookeeper_bind_address` | `hostvars[inventory_hostname]['ansible_' + openio_zookeeper_bind_interface]['ipv4']['address']` | The address that this zookeeper instance will run on |
+| `openio_zookeeper_bind_address` | `openio_bind_address` | The address that this zookeeper instance will run on |
 | `openio_zookeeper_bind_interface` | `ansible_default_ipv4.alias` | The interface that this zookeeper instance will run on |
 | `openio_zookeeper_bind_port` | `6005` | Listening port |
 | `openio_zookeeper_cluster_ports` | `"2888:3888"` | Peers use the former port to connect to other peers |
@@ -32,7 +32,7 @@ An Ansible role for manage zookeeper. Specifically, the responsibilities of this
 | `openio_zookeeper_parallel_gc_threads` | `ansible_processor_vcpus` | Sets the number of threads used during parallel phases of the garbage collectors. The default value varies with the platform on which the JVM is running |
 | `openio_zookeeper_rolling_log_file_max_size` | `"10MB"` | Maximum allowed file size (in bytes) before rolling over |
 | `openio_zookeeper_servers` | `dict` | Dict of ip, host and id of cluster member |
-| `openio_zookeeper_serviceid` | `0` | ID in gridinit |
+| `openio_zookeeper_serviceid` | `"{{ 0 + openio_legacy_serviceid | d(0) | int }}"` | ID in gridinit |
 | `openio_zookeeper_sync_limit` | `5` | The entry syncLimit limits how far out of date a server can be from a leader |
 | `openio_zookeeper_tick_time` | `2000` | The basic time unit in milliseconds used by ZooKeeper. It is used to do heartbeats and the minimum session timeout will be twice the tickTime |
 | `openio_zookeeper_volume` | `"/var/lib/oio/sds/{{ openio_zookeeper_namespace }}/zookeeper-{{ openio_zookeeper_serviceid }}"` | Path to store data |
