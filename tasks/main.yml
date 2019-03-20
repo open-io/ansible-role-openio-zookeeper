@@ -60,12 +60,22 @@
 
   register: _zookeeper_conf
 
+- name: Check service status
+  command: "gridinit_cmd status {{ openio_zookeeper_namespace }}-{{ openio_zookeeper_servicename }}"
+  register: zookeeper_status
+  changed_when: false
+  failed_when: false
+
 - name: restart zookeeper
   shell: |
     gridinit_cmd reload
     gridinit_cmd restart  {{ openio_zookeeper_namespace }}-{{ openio_zookeeper_servicename }}
   when:
-    - _zookeeper_conf.changed
+    - (_zookeeper_conf.changed or zookeeper_status.rc != 0)
     - not openio_zookeeper_provision_only
   tags: configure
+
+- name: Check service status
+  command: "gridinit_cmd status {{ openio_zookeeper_namespace }}-{{ openio_zookeeper_servicename }}"
+  changed_when: false
 ...
