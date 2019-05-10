@@ -60,12 +60,32 @@
 
   register: _zookeeper_conf
 
-- name: restart zookeeper
+- name: "restart zookeeper to apply the new configuration"
   shell: |
     gridinit_cmd reload
     gridinit_cmd restart  {{ openio_zookeeper_namespace }}-{{ openio_zookeeper_servicename }}
+  register: _restart_zookeeper
   when:
-    - _zookeeper_conf.changed
+    - _zookeeper_conf is changed
     - not openio_zookeeper_provision_only
   tags: configure
+
+- block:
+    - name: "Ensure zookeeper is started"
+      command: gridinit_cmd start {{ openio_zookeeper_namespace }}-{{ openio_zookeeper_servicename }}
+      register: _start_zookeeper
+      changed_when: '"Success" in _start_zookeeper.stdout'
+      when:
+        - not openio_zookeeper_provision_only
+        - _restart_zookeeper is skipped
+      tags: configure
+
+    - name: check zookeeper
+      shell: "echo ruok | nc {{ openio_zookeeper_bind_address }} {{ openio_zookeeper_bind_port }}"
+      register: _zookeeper_check
+      retries: 3
+      delay: 5
+      until: _zookeeper_check.stdout.find("imok") != -1
+      changed_when: false
+  when: openio_bootstrap | d(false)
 ...

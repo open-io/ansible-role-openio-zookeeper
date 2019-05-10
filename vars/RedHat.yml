@@ -9,6 +9,7 @@ zookeeper_packages:
   - java-headless
   - zookeeper
   - python-ZooKeeper
+  - nmap-ncat
 
 syslog_user: openio
 ...
