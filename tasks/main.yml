@@ -87,5 +87,6 @@
       delay: 5
       until: _zookeeper_check.stdout.find("imok") != -1
       changed_when: false
+      when: not ansible_check_mode
   when: openio_bootstrap | d(false)
 ...
