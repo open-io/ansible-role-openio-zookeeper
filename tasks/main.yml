@@ -5,7 +5,9 @@
   with_first_found:
     - "{{ ansible_distribution }}.yml"
     - "{{ ansible_os_family }}.yml"
-  tags: install
+  tags:
+    - install
+    - configure
 
 - name: "Include {{ ansible_distribution }} tasks"
   include_tasks: "{{ item }}"
@@ -17,6 +19,7 @@
 - name: register openio_zookeeper_bind_address
   set_fact:
     _zk_address: "{{ openio_zookeeper_bind_address }}"
+  tags: configure
 
 - name: Ensure directories exists
   file:
@@ -32,8 +35,7 @@
     - path: "{{ openio_zookeeper_log_dir }}"
       owner: "{{ syslog_user }}"
       mode: "0750"
-  tags: install
-
+  tags: configure
 
 - name: Generate configuration files
   template:
@@ -57,7 +59,7 @@
         {{ openio_zookeeper_servicename }}.conf"
     - src: "myid.j2"
       dest: "{{ openio_zookeeper_volume }}/myid"
-
+  tags: configure
   register: _zookeeper_conf
 
 - name: "restart zookeeper to apply the new configuration"
@@ -87,6 +89,7 @@
       delay: 5
       until: _zookeeper_check.stdout.find("imok") != -1
       changed_when: false
+      tags: configure
       when: not ansible_check_mode
   when: openio_bootstrap | d(false)
 ...
