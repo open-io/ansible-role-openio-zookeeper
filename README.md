@@ -37,6 +37,7 @@ An Ansible role for manage zookeeper. Specifically, the responsibilities of this
 | `openio_zookeeper_tick_time` | `2000` | The basic time unit in milliseconds used by ZooKeeper. It is used to do heartbeats and the minimum session timeout will be twice the tickTime |
 | `openio_zookeeper_volume` | `"/var/lib/oio/sds/{{ openio_zookeeper_namespace }}/zookeeper-{{ openio_zookeeper_serviceid }}"` | Path to store data |
 | `openio_zookeeper_provision_only` | `false` | Provision only without restarting services |
+| `openio_zookeeper_package_upgrade` | `false` | Set the packages to the latest version (to be set in extra_vars) |
 
 
 ## Dependencies
