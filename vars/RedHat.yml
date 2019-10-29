@@ -3,7 +3,7 @@
 ---
 openio_zookeeper_classpath:
   - "{{ openio_zookeeper_sysconfig_dir }}/{{ openio_zookeeper_servicename }}"
-  - /usr/share/zookeeper/*
+  - /usr/share/java/zookeeper/*
 
 zookeeper_packages:
   - java-headless
