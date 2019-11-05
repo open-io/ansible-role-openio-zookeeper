@@ -17,7 +17,7 @@ autopurge.snapRetainCount={{ openio_zookeeper_autopurge_snapRetainCount }}
 autopurge.purgeInterval={{ openio_zookeeper_autopurge_purgeInterval }}
 {% endif %}
 
-4lw.commands.whitelist=stat, ruok, conf, isro, srvr
+4lw.commands.whitelist=stat, ruok, conf, isro, srvr, mntr
 
 {% for server in openio_zookeeper_servers %}
 {% if server.host is defined %}
