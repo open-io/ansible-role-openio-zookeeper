@@ -17,6 +17,7 @@ zookeeper_packages:
   - default-jre-headless
   - zookeeperd
   - python-zookeeper
+  - python3-zookeeper
   - netcat
 syslog_user: syslog
 ...
