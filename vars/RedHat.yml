@@ -8,7 +8,6 @@ openio_zookeeper_classpath:
 zookeeper_packages:
   - java-headless
   - zookeeper
-  - python-zookeeper
   - python3-zookeeper
   - nmap-ncat
 
