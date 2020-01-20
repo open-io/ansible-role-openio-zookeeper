@@ -34,7 +34,7 @@
     - path: "{{ openio_zookeeper_volume }}"
     - path: "{{ openio_zookeeper_log_dir }}"
       owner: "{{ syslog_user }}"
-      mode: "0750"
+      mode: "{{ '0750' if ansible_os_family == 'RedHat' else '0770' }}"
   tags: configure
 
 - name: Generate configuration files
