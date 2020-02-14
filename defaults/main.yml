@@ -1,4 +1,3 @@
-# roles/zookeeper/defaults/main.yml
 ---
 openio_zookeeper_namespace: "{{ namespace | default('OPENIO') }}"
 openio_zookeeper_serviceid: "{{ 0 + openio_legacy_serviceid | d(0) | int }}"
@@ -51,4 +50,12 @@ openio_zookeeper_gridinit_file_prefix: ""
 openio_zookeeper_provision_only: false
 
 openio_zookeeper_package_upgrade: "{{ openio_package_upgrade | d(false) }}"
+
+openio_zookeeper_sysconfig_dir: "/etc/oio/sds/{{ openio_zookeeper_namespace }}"
+openio_zookeeper_servicename: "zookeeper-{{ openio_zookeeper_serviceid }}"
+openio_zookeeper_log_dir: "/var/log/oio/sds/{{ openio_zookeeper_namespace }}/{{ openio_zookeeper_servicename }}"
+
+openio_zookeeper_definition_file: >
+  "{{ openio_zookeeper_sysconfig_dir }}/
+  {{ openio_zookeeper_servicename }}/{{ openio_zookeeper_servicename }}.conf"
 ...
