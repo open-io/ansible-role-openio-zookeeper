@@ -44,10 +44,10 @@ openio_zookeeper_servers:
   - ip: "{{ openio_zookeeper_bind_address }}"
     id: 1
 #openio_zookeeper_hostname: "{{ ansible_hostname }}"
-openio_zookeeper_gridinit_dir: "/etc/gridinit.d/{{ openio_zookeeper_namespace }}"
-openio_zookeeper_gridinit_file_prefix: ""
+openio_zookeeper_gridinit_dir: "{{ openio_gridinit_d | d('/etc/gridinit.d/') }}"
+openio_zookeeper_gridinit_file_prefix: "{{ openio_zookeeper_namespace }}-"
 
-openio_zookeeper_provision_only: false
+openio_zookeeper_provision_only: "{{ openio_maintenance_mode | d(false) | bool }}"
 
 openio_zookeeper_package_upgrade: "{{ openio_package_upgrade | d(false) }}"
 
