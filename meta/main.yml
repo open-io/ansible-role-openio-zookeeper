@@ -1,16 +1,16 @@
 ---
 galaxy_info:
   author: Cedric DELGEHIER <cedric@openio.io>
-  description: PURPOSE
+  description: Install zookeeper for OpenIO
   company: OpenIO
-  license: Apache
+  license: AGPLv3
 
-  min_ansible_version: 2.4
+  min_ansible_version: 2.9
 
   platforms:
     - name: Ubuntu
       versions:
-        - xenial
+        - bionic
     - name: EL
       versions:
         - 7
