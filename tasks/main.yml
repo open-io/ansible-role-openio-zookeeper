@@ -29,7 +29,6 @@
     group: "{{ item.group | default('openio') }}"
     mode: "{{ item.mode | default(0755) }}"
   with_items:
-    - path: "/etc/gridinit.d/{{ openio_zookeeper_namespace }}"
     - path: "{{ openio_zookeeper_sysconfig_dir }}/{{ openio_zookeeper_servicename }}"
     - path: "{{ openio_zookeeper_volume }}"
     - path: "{{ openio_zookeeper_log_dir }}"
