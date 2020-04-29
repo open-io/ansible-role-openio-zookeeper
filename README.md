@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/open-io/ansible-role-openio-zookeeper.svg?branch=master)](https://travis-ci.org/open-io/ansible-role-openio-zookeeper)
+[![Build Status](https://travis-ci.org/open-io/ansible-role-openio-zookeeper.svg?branch=20.04)](https://travis-ci.org/open-io/ansible-role-openio-zookeeper)
 # Ansible role `zookeeper`
 
 An Ansible role for manage zookeeper. Specifically, the responsibilities of this role are to:
