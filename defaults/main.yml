@@ -39,6 +39,8 @@ openio_zookeeper_autopurge_snapRetainCount: 3
 openio_zookeeper_autopurge_purgeInterval: 1
 openio_zookeeper_log_properties: "INFO,ROLLINGFILE"
 openio_zookeeper_rolling_log_file_max_size: "10MB"
+openio_zookeeper_rolling_log_file_max_index: ""
+
 
 openio_zookeeper_servers:
   - ip: "{{ openio_zookeeper_bind_address }}"
